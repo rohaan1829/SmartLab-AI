@@ -50,6 +50,31 @@ npm run dev
 npm run client
 ```
 
+## 🔐 Creating Superuser Account
+
+Before using the application, you need to create a superuser account with full administrative permissions:
+
+### Quick Setup (Default Credentials)
+```bash
+npm run create-superuser
+```
+
+**Default Credentials:**
+- Email: `admin@smartlab.com`
+- Password: `SuperAdmin123!`
+
+### Interactive Setup
+```bash
+npm run create-superuser:interactive
+```
+
+### Custom Setup
+```bash
+node create-superuser.js --email "your-email@company.com" --password "YourSecurePassword123!"
+```
+
+For detailed instructions, see [SUPERUSER_GUIDE.md](./SUPERUSER_GUIDE.md).
+
 ## 🔐 Security Features
 
 - **JWT Authentication**: Secure token-based authentication

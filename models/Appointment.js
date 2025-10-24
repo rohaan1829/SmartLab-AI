@@ -23,7 +23,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'Other'],
+    enum: ['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'ECG', 'Consultation', 'Follow-up', 'Other'],
     required: true
   },
   reason: {

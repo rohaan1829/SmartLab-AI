@@ -33,15 +33,15 @@ const userSchema = new mongoose.Schema({
     enum: ['superadmin', 'receptionist', 'patient'],
     default: 'patient'
   },
-  // Patient-specific fields (only relevant for patient role)
+  // Patient-specific fields (required for all users in registration)
   dateOfBirth: {
     type: Date,
-    required: function() { return this.role === 'patient'; }
+    required: [true, 'Date of birth is required']
   },
   gender: {
     type: String,
     enum: ['Male', 'Female', 'Other'],
-    required: function() { return this.role === 'patient'; }
+    required: [true, 'Gender is required']
   },
   phone: {
     type: String,

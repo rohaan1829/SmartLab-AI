@@ -104,15 +104,16 @@ const Register = () => {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
+    // Date of birth and gender are required for all users
+    if (!formData.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date of birth is required';
+    }
+    if (!formData.gender) {
+      newErrors.gender = 'Gender is required';
+    }
+
     // Role-specific validation
-    if (formData.role === 'patient') {
-      if (!formData.dateOfBirth) {
-        newErrors.dateOfBirth = 'Date of birth is required for patients';
-      }
-      if (!formData.gender) {
-        newErrors.gender = 'Gender is required for patients';
-      }
-    } else if (['superadmin', 'receptionist'].includes(formData.role)) {
+    if (['superadmin', 'receptionist'].includes(formData.role)) {
       if (!formData.department.trim()) {
         newErrors.department = 'Department is required for staff';
       }
@@ -343,47 +344,51 @@ const Register = () => {
                   </>
                 )}
 
+                {/* Personal Information - Required for all users */}
+                <hr />
+                <h5 className="mb-3">Personal Information</h5>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Date of Birth *</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="dateOfBirth"
+                        value={formData.dateOfBirth}
+                        onChange={handleChange}
+                        isInvalid={!!errors.dateOfBirth}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.dateOfBirth}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Gender *</Form.Label>
+                      <Form.Select
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleChange}
+                        isInvalid={!!errors.gender}
+                      >
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.gender}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
                 {/* Patient-specific fields */}
                 {isPatient && (
                   <>
                     <hr />
                     <h5 className="mb-3">Patient Information</h5>
-                    <Row>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Date of Birth *</Form.Label>
-                          <Form.Control
-                            type="date"
-                            name="dateOfBirth"
-                            value={formData.dateOfBirth}
-                            onChange={handleChange}
-                            isInvalid={!!errors.dateOfBirth}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {errors.dateOfBirth}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col md={6}>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Gender *</Form.Label>
-                          <Form.Select
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleChange}
-                            isInvalid={!!errors.gender}
-                          >
-                            <option value="">Select gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                          </Form.Select>
-                          <Form.Control.Feedback type="invalid">
-                            {errors.gender}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                    </Row>
 
                     <Form.Group className="mb-3">
                       <Form.Label>Address</Form.Label>

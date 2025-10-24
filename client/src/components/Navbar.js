@@ -133,16 +133,20 @@ const Navigation = () => {
                   } 
                   id="user-dropdown"
                 >
-                  <NavDropdown.Item as={LinkContainer} to="/profile">
-                    <i className="fas fa-user me-2"></i>
-                    Profile
-                  </NavDropdown.Item>
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>
+                      <i className="fas fa-user me-2"></i>
+                      Profile
+                    </NavDropdown.Item>
+                  </LinkContainer>
                   
                   {hasRole('superadmin') && (
-                    <NavDropdown.Item as={LinkContainer} to="/users">
-                      <i className="fas fa-users-cog me-2"></i>
-                      Manage Users
-                    </NavDropdown.Item>
+                    <LinkContainer to="/users">
+                      <NavDropdown.Item>
+                        <i className="fas fa-users-cog me-2"></i>
+                        Manage Users
+                      </NavDropdown.Item>
+                    </LinkContainer>
                   )}
                   
                   <NavDropdown.Divider />

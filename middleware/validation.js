@@ -16,6 +16,7 @@ const sanitizeXSS = xss();
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', JSON.stringify(errors.array(), null, 2));
     return res.status(400).json({
       status: 'error',
       message: 'Validation failed',
@@ -102,14 +103,13 @@ const appointmentValidations = {
     body('patientId').isMongoId().withMessage('Valid patient ID is required'),
     commonValidations.date('appointmentDate'),
     body('appointmentTime').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).withMessage('Valid time format (HH:MM) is required'),
-    body('type').isIn(['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'Other']).withMessage('Valid appointment type is required'),
-    body('reason').trim().isLength({ min: 10, max: 500 }).withMessage('Reason must be between 10 and 500 characters'),
+    body('type').isIn(['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'ECG', 'Consultation', 'Follow-up', 'Other']).withMessage('Valid appointment type is required'),
+    body('reason').trim().isLength({ min: 5, max: 500 }).withMessage('Reason must be between 5 and 500 characters'),
     body('homeCollection.requested').optional().isBoolean(),
-    body('homeCollection.collectionAddress.street').optional().trim().isLength({ max: 100 }),
-    body('homeCollection.collectionAddress.city').optional().trim().isLength({ max: 50 }),
-    body('homeCollection.collectionAddress.state').optional().trim().isLength({ max: 50 }),
-    body('homeCollection.collectionAddress.zipCode').optional().trim().isLength({ max: 10 }),
-    body('homeCollection.collectionAddress.country').optional().trim().isLength({ max: 50 }),
+    body('homeCollection.address').optional().trim().isLength({ max: 200 }),
+    body('homeCollection.contactPhone').optional().trim().isLength({ max: 20 }),
+    body('homeCollection.preferredTime').optional().trim().isLength({ max: 50 }),
+    body('homeCollection.specialInstructions').optional().trim().isLength({ max: 500 }),
     handleValidationErrors
   ],
   
@@ -117,8 +117,8 @@ const appointmentValidations = {
     commonValidations.mongoId('id'),
     body('appointmentDate').optional().isISO8601().withMessage('Valid appointment date is required'),
     body('appointmentTime').optional().matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).withMessage('Valid time format (HH:MM) is required'),
-    body('type').optional().isIn(['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'Other']).withMessage('Valid appointment type is required'),
-    body('reason').optional().trim().isLength({ min: 10, max: 500 }).withMessage('Reason must be between 10 and 500 characters'),
+    body('type').optional().isIn(['Blood Test', 'Urine Test', 'X-Ray', 'CT Scan', 'MRI', 'Ultrasound', 'ECG', 'Consultation', 'Follow-up', 'Other']).withMessage('Valid appointment type is required'),
+    body('reason').optional().trim().isLength({ min: 5, max: 500 }).withMessage('Reason must be between 5 and 500 characters'),
     body('status').optional().isIn(['Pending', 'Approved', 'Rejected', 'Completed', 'Cancelled', 'No Show']).withMessage('Valid status is required'),
     body('approvalNotes').optional().trim().isLength({ max: 500 }).withMessage('Approval notes cannot exceed 500 characters'),
     body('rejectionReason').optional().trim().isLength({ max: 500 }).withMessage('Rejection reason cannot exceed 500 characters'),
@@ -197,9 +197,9 @@ const userValidations = {
     body('department').optional().trim().isLength({ max: 100 }).withMessage('Department name cannot exceed 100 characters'),
     body('employeeId').optional().trim().isLength({ max: 20 }).withMessage('Employee ID cannot exceed 20 characters'),
     commonValidations.phone(),
-    // Patient-specific validations
-    body('dateOfBirth').optional().isISO8601().withMessage('Valid date of birth is required'),
-    body('gender').optional().isIn(['Male', 'Female', 'Other']).withMessage('Valid gender is required'),
+    // Patient-specific validations - required for all users
+    body('dateOfBirth').isISO8601().withMessage('Valid date of birth is required'),
+    body('gender').isIn(['Male', 'Female', 'Other']).withMessage('Valid gender is required'),
     handleValidationErrors
   ],
   

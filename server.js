@@ -28,16 +28,22 @@ app.use(helmet({
   },
 }));
 
-// Rate limiting
-app.use('/api', apiLimiter);
-
-// CORS configuration
+// CORS configuration - must be before rate limiting
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://yourdomain.com'] 
-    : ['http://localhost:3000'],
-  credentials: true
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  optionsSuccessStatus: 200
 }));
+
+// Handle preflight requests explicitly
+app.options('*', cors());
+
+// Rate limiting (after CORS)
+app.use('/api', apiLimiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

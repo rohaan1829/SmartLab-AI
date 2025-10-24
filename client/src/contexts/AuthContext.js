@@ -57,8 +57,10 @@ export const AuthProvider = ({ children }) => {
       Cookies.set('jwt', newToken, { expires: 7 });
       localStorage.setItem('token', newToken);
       
-      // Log successful login
-      activityLogger.logLogin(email, true);
+      // Log successful login (non-blocking)
+      setTimeout(() => {
+        activityLogger.logLogin(email, true);
+      }, 100);
       
       return { success: true };
     } catch (error) {
@@ -84,8 +86,10 @@ export const AuthProvider = ({ children }) => {
       Cookies.set('jwt', newToken, { expires: 7 });
       localStorage.setItem('token', newToken);
       
-      // Log successful registration
-      activityLogger.logRegistration(userData.email, userData.role, true);
+      // Log successful registration (non-blocking)
+      setTimeout(() => {
+        activityLogger.logRegistration(userData.email, userData.role, true);
+      }, 100);
       
       return { success: true };
     } catch (error) {

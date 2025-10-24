@@ -36,14 +36,13 @@ router.post('/register', authLimiter, userValidations.register, async (req, res)
       email,
       password,
       role: userRole,
-      phone
+      phone,
+      dateOfBirth,
+      gender
     };
 
     // Add role-specific fields
-    if (userRole === 'patient') {
-      userData.dateOfBirth = dateOfBirth;
-      userData.gender = gender;
-    } else if (['superadmin', 'receptionist'].includes(userRole)) {
+    if (['superadmin', 'receptionist'].includes(userRole)) {
       userData.department = department;
       userData.employeeId = employeeId;
     }

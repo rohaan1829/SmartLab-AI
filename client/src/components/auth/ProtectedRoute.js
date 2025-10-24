@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Spinner } from 'react-bootstrap';
 
 const ProtectedRoute = ({ children, requiredRoles = [], requiredPermissions = [] }) => {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user, loading, isAuthenticated, hasPermission } = useAuth();
   const location = useLocation();
 
   // Show loading spinner while checking authentication
@@ -44,7 +44,7 @@ const ProtectedRoute = ({ children, requiredRoles = [], requiredPermissions = []
   // Check permission-based access
   if (requiredPermissions.length > 0) {
     const hasAllPermissions = requiredPermissions.every(permission => 
-      user.hasPermission ? user.hasPermission(permission) : false
+      hasPermission(permission)
     );
     
     if (!hasAllPermissions) {

@@ -132,6 +132,8 @@ router.get('/:id', protect, commonValidations.mongoId('id'), async (req, res) =>
 // POST /api/appointments - Create new appointment
 router.post('/', protect, restrictTo('patient'), appointmentValidations.create, async (req, res) => {
   try {
+    console.log('Appointment creation request body:', JSON.stringify(req.body, null, 2));
+    
     // Check if patient exists
     const patient = await User.findOne({ _id: req.body.patientId, role: 'patient' });
     if (!patient) {
@@ -148,6 +150,8 @@ router.post('/', protect, restrictTo('patient'), appointmentValidations.create, 
       status: 'Pending' // All new appointments start as pending
     };
 
+    console.log('Appointment data to save:', JSON.stringify(appointmentData, null, 2));
+
     const appointment = new Appointment(appointmentData);
     await appointment.save();
     
@@ -159,6 +163,7 @@ router.post('/', protect, restrictTo('patient'), appointmentValidations.create, 
     
     res.status(201).json(appointment);
   } catch (error) {
+    console.error('Appointment creation error:', error);
     logHelpers.logError(error, { 
       context: 'appointment_creation',
       userId: req.user._id,

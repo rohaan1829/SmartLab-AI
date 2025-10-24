@@ -171,7 +171,8 @@ class ActivityLogger {
           'Content-Type': 'application/json',
           ...(token && { Authorization: `Bearer ${token}` })
         },
-        body: JSON.stringify(logData)
+        body: JSON.stringify(logData),
+        mode: 'cors'
       });
 
       if (!response.ok) {
