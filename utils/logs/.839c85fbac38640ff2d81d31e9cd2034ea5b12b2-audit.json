@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 90
+    },
+    "auditLog": "C:\\Users\\Administrator\\Documents\\GitHub\\SmartLab-AI\\utils\\logs\\.839c85fbac38640ff2d81d31e9cd2034ea5b12b2-audit.json",
+    "files": [
+        {
+            "date": 1761288907892,
+            "name": "C:\\Users\\Administrator\\Documents\\GitHub\\SmartLab-AI\\utils\\logs\\security-2025-10-24.log",
+            "hash": "3ad3a9ce66d3a71abca44f4e50aca374336d7569cda42bde939c920f62d91625"
+        }
+    ],
+    "hashType": "sha256"
+}
