@@ -5,8 +5,7 @@ Create a `.env` file in the root directory with the following variables:
 
 ```bash
 # Database Configuration
-DATABASE_URL=mongodb+srv://roaandev_db_user:Rmug1829@corexcluster.k3jw29a.mongodb.net/
-
+DATABASE_URL= x
 # Server Configuration
 PORT=5000
 NODE_ENV=development
